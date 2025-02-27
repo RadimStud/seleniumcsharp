@@ -1,13 +1,18 @@
 name: Run Selenium Tests
 
 on:
+  push:  # Spustí testy při každém pushi do jakékoliv větve
+    branches:
+      - main
+      - develop  # Přidej další větve podle potřeby
+  pull_request:  # Spustí testy při každém pull requestu
   schedule:
-    - cron: "0 * * * *"  # Spustí testy každou hodinu
-  workflow_dispatch:      # Ruční spuštění přes GitHub UI
+    - cron: "0 * * * *"  # Automatické spuštění každou hodinu
+  workflow_dispatch:  # Možnost ručního spuštění přes GitHub UI
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Můžeš použít i windows-latest, pokud chceš testovat na Windows
+    runs-on: ubuntu-latest  # Nebo windows-latest, pokud chceš Windows
 
     steps:
       - name: Checkout repository
@@ -16,7 +21,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'  # Nebo jinou verzi podle projektu
+          dotnet-version: '6.0.x'  # Nebo jinou verzi, pokud používáš jinou
 
       - name: Install Chrome
         run: |
