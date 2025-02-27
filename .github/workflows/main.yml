@@ -28,6 +28,13 @@ jobs:
           sudo apt update
           sudo apt install -y google-chrome-stable
 
+      - name: Install Selenium dependencies
+        run: |
+          dotnet add package Selenium.WebDriver
+          dotnet add package Selenium.WebDriver.ChromeDriver
+          dotnet add package NUnit
+          dotnet add package NUnit3TestAdapter
+
       - name: Restore dependencies
         run: dotnet restore
 
