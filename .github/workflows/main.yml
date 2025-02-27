@@ -1,0 +1,34 @@
+name: Run Selenium Tests
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Spustí testy každou hodinu
+  workflow_dispatch:      # Ruční spuštění přes GitHub UI
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Můžeš použít i windows-latest, pokud chceš testovat na Windows
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'  # Nebo jinou verzi podle projektu
+
+      - name: Install Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y google-chrome-stable
+
+      - name: Install Selenium dependencies
+        run: |
+          dotnet add package Selenium.WebDriver
+          dotnet add package Selenium.WebDriver.ChromeDriver
+          dotnet add package NUnit
+          dotnet add package NUnit3TestAdapter
+
+      - name: Run Selenium Tests
+        run: dotnet test
