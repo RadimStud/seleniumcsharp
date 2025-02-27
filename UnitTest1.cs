@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -8,13 +8,20 @@ namespace SeleniumTests
 {
     public class MainMenuTests
     {
-        private IWebDriver? driver;  // Nullable oprava CS8618
+        private IWebDriver? driver;
         private readonly string baseUrl = "https://radimstudeny.cz";
 
         [SetUp]
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArgument("--headless");  // Běží bez UI
+            chromeOptions.AddArgument("--no-sandbox");  // Oprava pro GitHub Actions
+            chromeOptions.AddArgument("--disable-dev-shm-usage");  // Oprava pro CI/CD
+            chromeOptions.AddArgument("--disable-gpu");  // Prevence problémů s vykreslováním
+            chromeOptions.AddArgument("--remote-debugging-port=9222");  // Debugging mode
+
+            driver = new ChromeDriver(chromeOptions);
             driver.Manage().Window.Maximize();
         }
 
@@ -38,7 +45,7 @@ namespace SeleniumTests
                 {
                     IWebElement? menuItem = driver?.FindElement(By.XPath(xpath));
                     menuItem?.Click();
-                    Thread.Sleep(2000); // Počkej na přesměrování
+                    Thread.Sleep(2000);
                     Console.WriteLine($"Kliknuto na menu: {xpath}");
                 }
                 catch (NoSuchElementException)
@@ -53,8 +60,8 @@ namespace SeleniumTests
         {
             if (driver != null)
             {
-                driver.Quit();  // Ukončí prohlížeč
-                driver.Dispose(); // Uvolní prostředky
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }
