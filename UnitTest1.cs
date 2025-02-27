@@ -11,22 +11,22 @@ namespace SeleniumTests
     {
         private IWebDriver? driver;
         private readonly string baseUrl = "https://radimstudeny.cz";
-        private readonly string screenshotPath = "/home/runner/work/screenshots"; // Pro GitHub Actions
+        private readonly string screenshotPath = "/home/runner/work/TestProject1/screenshots"; // GitHub Actions path
 
         [SetUp]
         public void SetUp()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArgument("--headless");  // Běží bez UI
-            chromeOptions.AddArgument("--no-sandbox");  // Oprava pro GitHub Actions
-            chromeOptions.AddArgument("--disable-dev-shm-usage");  // Oprava pro CI/CD
-            chromeOptions.AddArgument("--disable-gpu");  // Prevence problémů s vykreslováním
-            chromeOptions.AddArgument("--remote-debugging-port=9222");  // Debugging mode
+            chromeOptions.AddArgument("--headless");
+            chromeOptions.AddArgument("--no-sandbox");
+            chromeOptions.AddArgument("--disable-dev-shm-usage");
+            chromeOptions.AddArgument("--disable-gpu");
+            chromeOptions.AddArgument("--remote-debugging-port=9222");
 
             driver = new ChromeDriver(chromeOptions);
             driver.Manage().Window.Maximize();
 
-            // Vytvoření složky pro screenshoty, pokud neexistuje
+            // Vytvoření složky pro screenshoty
             Directory.CreateDirectory(screenshotPath);
         }
 
