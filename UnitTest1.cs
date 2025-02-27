@@ -73,7 +73,7 @@ namespace SeleniumTests
             try
             {
                 Screenshot screenshot = ((ITakesScreenshot)driver!).GetScreenshot();
-                screenshot.SaveAsFile(filePath, ScreenshotImageFormat.Png);
+                screenshot.SaveAsFile(filePath, OpenQA.Selenium.ScreenshotImageFormat.Png); // Oprava
             }
             catch (Exception ex)
             {
