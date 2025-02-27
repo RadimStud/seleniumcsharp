@@ -1,18 +1,18 @@
 name: Run Selenium Tests
 
 on:
-  push:  # Spustí testy při každém pushi do jakékoliv větve
+  push:
     branches:
       - main
-      - develop  # Přidej další větve podle potřeby
-  pull_request:  # Spustí testy při každém pull requestu
+      - develop
+  pull_request:
   schedule:
-    - cron: "0 * * * *"  # Automatické spuštění každou hodinu
-  workflow_dispatch:  # Možnost ručního spuštění přes GitHub UI
+    - cron: "0 * * * *"
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Nebo windows-latest, pokud chceš Windows
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -21,19 +21,18 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'  # Nebo jinou verzi, pokud používáš jinou
+          dotnet-version: '8.0.x'  # 🔹 OPRAVA: Použití správné verze .NET
 
       - name: Install Chrome
         run: |
           sudo apt update
           sudo apt install -y google-chrome-stable
 
-      - name: Install Selenium dependencies
-        run: |
-          dotnet add package Selenium.WebDriver
-          dotnet add package Selenium.WebDriver.ChromeDriver
-          dotnet add package NUnit
-          dotnet add package NUnit3TestAdapter
+      - name: Restore dependencies
+        run: dotnet restore  # 🔹 OPRAVA: Správné obnovení závislostí
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore  # 🔹 OPRAVA: Přidání build kroku
 
       - name: Run Selenium Tests
-        run: dotnet test
+        run: dotnet test --configuration Release --no-build  # 🔹 OPRAVA: Spustit testy bez rebuildu
