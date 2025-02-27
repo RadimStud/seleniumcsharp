@@ -21,7 +21,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'  # 🔹 OPRAVA: Použití správné verze .NET
+          dotnet-version: '8.0.x'
 
       - name: Install Chrome
         run: |
@@ -29,10 +29,16 @@ jobs:
           sudo apt install -y google-chrome-stable
 
       - name: Restore dependencies
-        run: dotnet restore  # 🔹 OPRAVA: Správné obnovení závislostí
+        run: dotnet restore
 
       - name: Build the project
-        run: dotnet build --configuration Release --no-restore  # 🔹 OPRAVA: Přidání build kroku
+        run: dotnet build --configuration Release --no-restore
 
       - name: Run Selenium Tests
-        run: dotnet test --configuration Release --no-build  # 🔹 OPRAVA: Spustit testy bez rebuildu
+        run: dotnet test --configuration Release --no-build
+
+      - name: Upload Screenshots as Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Selenium-Screenshots
+          path: /home/runner/work/TestProject1/screenshots
